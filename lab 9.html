@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> My photo Gallery </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: lightgrey;
+        }
+
+        header {
+            background-color: orange;
+            color: black;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        #filters {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        #filters button {
+            background-color: yellow;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #filters button:hover {
+            background-color: green;
+        }
+
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem;
+        }
+
+        #gallery img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        #lightbox.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #lightbox #close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        #lightbox img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Photo Gallery</h1>
+    </header>
+    <section id="filters">
+        <button data-filter="all">All</button>
+        <button data-filter="nature">Dogs</button>
+        <button data-filter="architecture">Architecture</button>
+        <button data-filter="people">Art</button>
+    </section>
+    <section id="gallery">
+        <img src="https://th.bing.com/th/id/R.854dd8955515c408033b24db7f2a6d1a?rik=EbmhZJEVVX6hTQ&riu=http%3a%2f%2fwww.cutenessoverflow.com%2fwp-content%2fuploads%2f2014%2f02%2fLittle-Cute-Puppy-1600x1200.jpg&ehk=MPYGeeHh59OIiNzQOYgdPoFwCvBH1Ubp%2fXKtPv2NK%2fU%3d&risl=&pid=ImgRaw&r=0" alt="Dogs" data-category="nature">
+        <img src="https://www.pixelstalk.net/wp-content/uploads/2016/08/Cute-Puppy-Background-Download-Free-1.jpg" alt="Dogs" data-category="nature">
+        <img src="https://wallpaperaccess.com/full/153244.jpg" alt="Architecture" data-category="architecture">
+        <img src="https://www.re-thinkingthefuture.com/wp-content/uploads/2021/03/A3545-20-Examples-of-Modern-Church-Architecture-Image-20.jpg" alt="Architecture" data-category="architecture">
+        <img src="https://th.bing.com/th/id/OIP.b09rOqgIgfJ9teK8IIbsegHaEs?rs=1&pid=ImgDetMain" alt="Art" data-category="people">
+         <img src="https://th.bing.com/th/id/R.024ec47c31f8e2953d39386a574f1d5c?rik=StZW7PUuJN2LBQ&pid=ImgRaw&r=0" alt="Art" data-category="people">
+        <!-- Add more images as needed -->
+    </section>
+    <div id="lightbox" class="hidden">
+        <span id="close">&times;</span>
+        <img id="lightbox-img" src="" alt="lightbox image">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Filtering
+            $('#filters button').click(function() {
+                var filter = $(this).attr('data-filter');
+                if (filter == 'all') {
+                    $('#gallery img').fadeIn();
+                } else {
+                    $('#gallery img').fadeOut();
+                    $('#gallery img[data-category="' + filter + '"]').fadeIn();
+                }
+            });
+
+            // Lightbox
+            $('#gallery img').click(function() {
+                var src = $(this).attr('src');
+                $('#lightbox-img').attr('src', src);
+                $('#lightbox').fadeIn().addClass('visible');
+            });
+
+            $('#close').click(function() {
+                $('#lightbox').fadeOut().removeClass('visible');
+            });
+
+            $('#lightbox').click(function(e) {
+                if (e.target.id == 'lightbox') {
+                    $('#lightbox').fadeOut().removeClass('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
